@@ -92,7 +92,6 @@ def show_kwic_search(df_src, key_prefix):
             res = df_src[df_src['Gap'].apply(lambda x: bool(pat.search(x)))] if not df_src.empty else pd.DataFrame()
             
             if not res.empty:
-                # Dinamik statistikani hisoblash
                 jami_marta = 0
                 fayllar = set()
                 topilgan_shakllar = []
@@ -113,10 +112,8 @@ def show_kwic_search(df_src, key_prefix):
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Dinamik chastotali lug'at (Qidirilgan kontekst bo'yicha)
                 st.write("📋 **Topilgan so'z shakllarining dinamik chastotasi:**")
-                df_shakllar = pd.DataFrame(Counter(top_reported for top_reported in top_shapes if isinstance(top_reported, str) else str(top_reported) for top_shapes in [top_reported for top_reported in top_shakllar]).most_common(), columns=["So'z shakli", "Chastota"])
-                df_shakllar = pd.DataFrame(Counter(top_shakllar).most_common(), columns=["So'z shakli", "Chastota"])
+                df_shakllar = pd.DataFrame(Counter(top_reported for top_reported in top_shakllar if isinstance(top_reported, str)).most_common(), columns=["So'z shakli", "Chastota"])
                 st.dataframe(df_shakllar, use_container_width=True)
                 
                 st.write("🔍 **Kontekstlar ro'yxati (KWIC):**")
@@ -126,7 +123,8 @@ def show_kwic_search(df_src, key_prefix):
                     with st.expander("Metama'lumotlar"): 
                         st.write({k: v for k, v in r.to_dict().items() if k not in ["Gap", "Fayl"]})
             else: st.warning("Korpus bazasidan ushbu so'z topilmadi.")
-                UMUMIY_FOLDER = "data/umumiy" if os.path.exists("data/umumiy") else "umumiy"
+
+UMUMIY_FOLDER = "data/umumiy" if os.path.exists("data/umumiy") else "umumiy"
 PUBLISTISTIKA_FOLDER = "data/publististika" if os.path.exists("data/publististika") else "publististika"
 
 st.sidebar.markdown("### 🧭 KORPUS NAVIGATSIYASI")
