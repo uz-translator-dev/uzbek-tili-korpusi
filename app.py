@@ -110,7 +110,6 @@ def analyze_text_statistics(df_corpus):
     }
     
     filtered_words = [w for w in words if w not in stop_words and len(w) > 2]
-    
     word_counts = Counter(filtered_words).most_common(20)
     
     bigrams = []
@@ -150,4 +149,7 @@ if page_selection == "🏠 Bosh sahifa":
     with c3: st.warning(f"✍️ Publististik matnlar korpusi\n\n21 ta matn | {total_gap_pub:,} ta gap")
 
 # =========================================================
-# 📂 2. UM
+# 📂 2. UMUMIY KORPUS (Yaxlit so'z highlight tizimi)
+# =========================================================
+elif page_selection == "📂 Umumiy korpus":
+    df = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt
