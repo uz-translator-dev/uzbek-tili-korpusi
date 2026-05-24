@@ -1,11 +1,35 @@
 import os
 import re
+from collections import Counter
 import pandas as pd
 import streamlit as st
 from docx import Document
 
 # Sahifa sozlamalari
 st.set_page_config(page_title="O'ZBEK TILI KORPUSI", layout="wide")
+
+# Sariq rangni xavfsiz integratsiya qilish uchun CSS
+st.markdown("""
+<style>
+    .highlight {
+        background-color: #FDE047 !important;
+        color: #000000 !important;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+    .sentence-container {
+        background-color: #FFFFFF;
+        padding: 15px 20px;
+        border-radius: 6px;
+        border-left: 5px solid #1E3A8A;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        margin-bottom: 10px;
+        font-size: 16px;
+        color: #1E293B;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # 1. DOCX teglarini xavfsiz o'qish
 def extract_tags_from_docx(docx_path):
@@ -23,16 +47,14 @@ def extract_tags_from_docx(docx_path):
             pass
     return tags
 
-# 2. Korpus yuklash bazasi (Xavfsiz va moslashuvchan)
+# 2. Korpus yuklash bazasi
 @st.cache_data
 def load_korpus_baza(folder_path, file_count, prefix_txt, prefix_docx, ext_txt, ext_docx):
     data = []
-    
     actual_folder = folder_path
     if not os.path.exists(actual_folder):
         base_name = os.path.basename(folder_path)
-        if os.path.exists(base_name):
-            actual_folder = base_name
+        if os.path.exists(base_name): actual_folder = base_name
         elif os.path.exists("data") and base_name in os.listdir("data"):
             actual_folder = os.path.join("data", base_name)
             
@@ -73,6 +95,31 @@ def load_korpus_baza(folder_path, file_count, prefix_txt, prefix_docx, ext_txt, 
                     pass
     return pd.DataFrame(data)
 
+# 3. Avtomatik statistik tahlil mexanizmi (Til birliklari uchun)
+def analyze_text_statistics(df_corpus):
+    if df_corpus.empty:
+        return [], []
+    
+    all_text = " ".join(df_corpus['Gap'].astype(str)).lower()
+    # Faqat so'zlarni ajratib olish
+    words = re.findall(r'\b[b-df-hj-np-rt-vxz\'aouei‘g‘shch]+\b', all_text)
+    
+    # O'zbek tili uchun stop-wordlar (bular chastotani buzmasligi uchun tahlildan olib tashlanadi)
+    stop_words = {'va', 'bilan', 'uchun', 'ham', 'bu', 'ki', 'shu', 'esa', 'bor', 'u', 'men', 'sen', 'emas', 'kabi', 'deb', 'tushgan', 'bo'g'liq', 'viloyat', 'respublika'}
+    
+    filtered_words = [w for w in words if w not in stop_words and len(w) > 2]
+    
+    # Eng ko'p ishlatilgan so'zlar
+    word_counts = Counter(filtered_words).most_common(20)
+    
+    # Takrorlanadigan iboralar (Bigramlar - kollokatsiyalar asosi)
+    bigrams = []
+    for i in range(len(filtered_words) - 1):
+        bigrams.append(f"{filtered_words[i]} {filtered_words[i+1]}")
+    bigram_counts = Counter(bigrams).most_common(10)
+    
+    return word_counts, bigram_counts
+
 # Papka manzillari tekshiruvi
 UMUMIY_FOLDER = "data/umumiy" if os.path.exists("data/umumiy") else ("umumiy" if os.path.exists("umumiy") else "data/umumiy")
 PUBLISTISTIKA_FOLDER = "data/publististika" if os.path.exists("data/publististika") else ("publististika" if os.path.exists("publististika") else "data/publististika")
@@ -98,22 +145,12 @@ if page_selection == "🏠 Bosh sahifa":
     total_gap_pub = len(df_pub_temp) if not df_pub_temp.empty else 0
 
     c1, c2, c3 = st.columns(3)
-    with c1:
-        st.success(f"📂 Umumiy korpus\n\n24 ta matn | {total_gap_um:,} ta gap")
-    with c2:
-        st.info("🌐 Parallel korpus\n\nO'zbek-Turk tili | Tillararo ulangan")
-    with c3:
-        st.warning(f"✍️ Publististik matnlar korpusi\n\n21 ta matn | {total_gap_pub:,} ta gap")
-
-    # Diagnostika paneli
-    st.write("---")
-    st.markdown("### 🛠️ Tizim fayllari diagnostikasi:")
-    base_to_check = "data" if os.path.exists("data") else "."
-    found_folders = os.listdir(base_to_check)
-    st.write(f"Mavjud papkalar/fayllar: `{found_folders}`")
+    with c1: st.success(f"📂 Umumiy korpus\n\n24 ta matn | {total_gap_um:,} ta gap")
+    with c2: st.info("🌐 Parallel korpus\n\nO'zbek-Turk tili | Tillararo ulangan")
+    with c3: st.warning(f"✍️ Publististik matnlar korpusi\n\n21 ta matn | {total_gap_pub:,} ta gap")
 
 # =========================================================
-# 📂 2. UMUMIY KORPUS
+# 📂 2. UMUMIY KORPUS (Sariq rangli highlight ulangan)
 # =========================================================
 elif page_selection == "📂 Umumiy korpus":
     df = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt", "docx")
@@ -129,7 +166,9 @@ elif page_selection == "📂 Umumiy korpus":
             if not res.empty:
                 st.success(f"🔍 Jami {len(res)} ta mos gap topildi.")
                 for _, r in res.iterrows():
-                    st.info(r['Gap'])
+                    # Sariq belgilash mexanizmi
+                    highlighted_sentence = pat.sub(r'<span class="highlight">\g<1></span>', r['Gap'])
+                    st.markdown(f'<div class="sentence-container">{highlighted_sentence}</div>', unsafe_allow_html=True)
                     with st.expander("Metama'lumotlar"): 
                         st.write({k: v for k, v in r.to_dict().items() if k not in ["Gap", "Fayl"]})
             else: st.warning("Topilmadi.")
@@ -143,11 +182,10 @@ elif page_selection == "📂 Umumiy korpus":
 # =========================================================
 elif page_selection == "🌐 Parallel korpus":
     st.title("🌐 O'zbek-Turk Parallel Korpusi")
-    st.info("ℹ️ Parallel korpus tizimi quyidagi oynada ochiladi. Bosh sahifaga qaytish uchun chap paneldagi navigatsiyadan foydalaning.")
     st.components.v1.iframe("https://uzbek-turk-parallel-korpusi-cnzm5cmc3tkccaysyxai5s.streamlit.app/?embed=true", height=800, scrolling=True)
 
 # =========================================================
-# ✍️ 4. PUBLISTISTIK MATNLAR KORPUSI
+# ✍️ 4. PUBLISTISTIK MATNLAR KORPUSI (Avtomatik Statistik Tahlil moduli qo'shildi)
 # =========================================================
 elif page_selection == "✍️ Publististik matnlar korpusi":
     df_pub = load_korpus_baza(PUBLISTISTIKA_FOLDER, 21, "pub.", "teg.", "txt", "docx")
@@ -164,18 +202,39 @@ elif page_selection == "✍️ Publististik matnlar korpusi":
             if not res.empty:
                 st.success(f"🔍 Publististik korpus bo'yicha jami {len(res)} ta mos gap aniqlandi.")
                 for _, r in res.iterrows():
-                    st.info(r['Gap'])
+                    # Sariq belgilash mexanizmi
+                    highlighted_sentence = pat.sub(r'<span class="highlight">\g<1></span>', r['Gap'])
+                    st.markdown(f'<div class="sentence-container">{highlighted_sentence}</div>', unsafe_allow_html=True)
                     with st.expander("Metama'lumotlar"): 
                         st.write({k: v for k, v in r.to_dict().items() if k not in ["Gap", "Fayl"]})
             else: st.warning("Publististik korpus matnlari ichida ushbu so'z topilmadi.")
 
     with tab_p2:
         st.subheader("📋 Talaba korpus asosida quyidagi jihatlarni tahlil qiladi:")
+        
+        # Matematik va statistik avtomatik hisoblashni ishga tushiramiz
+        top_words, top_bigrams = analyze_text_statistics(df_pub)
+        
         col_an1, col_an2 = st.columns(2)
         with col_an1:
-            st.info("### 1. Nutq strategiyalari\n\n* Persuaziv strategiyalar\n* Baholovchi birliklar\n* Emotsional ifodalar\n* Argumentatsiya usullari")
+            st.info("### 1. Nutq strategiyalari (Sifat tahlili)\n\n* Talaba matnlarni o'qib persuaziv strategiyalarni ajratadi.\n* Baholovchi va emotsional ifodalarni KWIC orqali qidiradi.\n* Argumentatsiya usullarini aniqlaydi.")
+            
+            st.warning("### 🚀 Avtomatik Hisoblangan Kalit va Eng Ko'p Ishlatilgan So'zlar\n\nMatnlar tarkibidan avtomatik ravishda ajratib olingan chastotali lug'at:")
+            if top_words:
+                df_words = pd.DataFrame(top_words, columns=["So'z (Birlik)", "Uchrashish soni (Chastota)"])
+                st.dataframe(df_words, use_container_width=True)
+            else:
+                st.write("Matnlar yuklanmagan.")
+                
         with col_an2:
-            st.info("### 2. Til birliklari\n\n* Eng ko'p ishlatilgan so'zlar\n* Kalit so'zlar\n* Kollokatsiyalar\n* Takrorlanadigan iboralar")
+            st.info("### 2. Til birliklari (Miqdoriy tahlil)\n\nQuyidagi jadvallarda publististik bazadagi eng faol birliklar avtomatik ko'rsatilgan:")
+            
+            st.success("### 🔗 Avtomatik aniqlangan Kollokatsiyalar va Iboralar\n\nBirga eng ko'p kelgan so'z juftliklari:")
+            if top_bigrams:
+                df_bigrams = pd.DataFrame(top_bigrams, columns=["Kollokatsiya (Birikma)", "Chastotasi"])
+                st.dataframe(df_bigrams, use_container_width=True)
+            else:
+                st.write("Birikmalar topilmadi.")
 
     with tab_p3:
         st.subheader("🏛️ Matnlardagi g'oyaviy va sotsiolingvistik tahlil yo'nalishlari:")
