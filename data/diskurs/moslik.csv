@@ -1,0 +1,713 @@
+﻿N-gram turi;O'zbekcha;Turkcha (Tarjimasi);Birga uchrashish chastotasi
+Unigram;bor;bir;9
+Unigram;farida;feride;36
+Unigram;osha;o;17
+Unigram;mehmonning;ya;2
+Unigram;oldiga;bir;3
+Unigram;dedi;dedi;36
+Unigram;soz;gibi;2
+Unigram;ammo;fakat;3
+Unigram;qaysi;hangi;4
+Unigram;korgani;fakat;1
+Unigram;kichkina;bir;5
+Unigram;meni;beni;33
+Unigram;qoyib;bir;3
+Unigram;qoydi;bu;2
+Unigram;bilan;bir;66
+Unigram;ogzimga;ağzıma;5
+Unigram;bolgani;ağzıma;2
+Unigram;uchun;için;40
+Unigram;ham;de;71
+Unigram;sariq;sarı;3
+Unigram;qizil;kırmızı;3
+Unigram;bolib;bir;17
+Unigram;bularni;bunları;3
+Unigram;na;ne;14
+Unigram;suv;ne;3
+Unigram;va;ne;4
+Unigram;bunday;bir;4
+Unigram;bolsam;ben;5
+Unigram;butunlay;büsbütün;3
+Unigram;uning;onun;12
+Unigram;alfozda;bir;4
+Unigram;lekin;fakat;38
+Unigram;bilib;bir;5
+Unigram;dugonalarim;olduğunu;2
+Unigram;men;ben;52
+Unigram;kongil;bir;4
+Unigram;hatto;bir;6
+Unigram;oldida;bir;8
+Unigram;turgan;bir;8
+Unigram;хudo;allah;4
+Unigram;oz;biraz;20
+Unigram;bersin;allah;5
+Unigram;kozim;gözüme;2
+Unigram;tushgan;bir;5
+Unigram;oyna;bir;2
+Unigram;yubordi;bir;5
+Unigram;shu;bir;26
+Unigram;dahliz;parluvarın;3
+Unigram;bosh;o;3
+Unigram;bolganda;o;3
+Unigram;mutlaqo;mutlaka;3
+Unigram;ichkariga;içeri;2
+Unigram;nima;ne;38
+Unigram;u;bir;25
+Unigram;begona;yabancı;3
+Unigram;odamlar;insanlar;2
+Unigram;nachora;bir;5
+Unigram;bolar;bir;4
+Unigram;ish;ne;2
+Unigram;eshikni;kapıyı;4
+Unigram;komron;kâmran;32
+Unigram;yonida;yanında;4
+Unigram;ekan;ne;5
+Unigram;togri;lâzım;5
+Unigram;kim;bir;7
+Unigram;biladi;kim;4
+Unigram;balki;belki;2
+Unigram;qol;el;4
+Unigram;kelar;ve;2
+Unigram;bolamning;kuzenimin;5
+Unigram;oxshash;benzer;4
+Unigram;chiroyli;güzel;5
+Unigram;qolini;elini;4
+Unigram;qilib;bir;22
+Unigram;mumkin;ya;2
+Unigram;yana;bir;13
+Unigram;birbiriga;birbirine;4
+Unigram;tushdi;bu;4
+Unigram;bular;bunların;2
+Unigram;menga;bana;17
+Unigram;tushundim;bunların;1
+Unigram;endi;artık;9
+Unigram;yosh;bir;9
+Unigram;bola;bir;7
+Unigram;boshqa;bir;16
+Unigram;chora;çare;3
+Unigram;qolmagan;kalmamıştı;2
+Unigram;edi;bir;43
+Unigram;ushlab;tutarak;3
+Unigram;uzun;uzun;3
+Unigram;bir;bir;148
+Unigram;qildim;bir;2
+Unigram;shunda;bu;1
+Unigram;bolsa;bu;10
+Unigram;keyin;sonra;28
+Unigram;kulib;gülerek;8
+Unigram;yonimga;yanıma;4
+Unigram;keldi;bir;4
+Unigram;unga;ona;4
+Unigram;qilish;etmek;3
+Unigram;kerak;bir;9
+Unigram;katta;bir;12
+Unigram;dedim;dedim;35
+Unigram;konfetlar;fondanlar;3
+Unigram;haqqi;ne;2
+Unigram;hamki;biraz;3
+Unigram;odam;bir;6
+Unigram;tortar;kâmran;3
+Unigram;xil;bir;3
+Unigram;konfet;bir;2
+Unigram;chiqib;bir;9
+Unigram;qolsa;bir;2
+Unigram;emas;değil;16
+Unigram;ularni;onları;2
+Unigram;yuragi;bir;3
+Unigram;birga;beraber;6
+Unigram;bu;bu;57
+Unigram;safar;bu;5
+Unigram;narsa;bir;24
+Unigram;deb;diye;30
+Unigram;oylayman;bu;3
+Unigram;yasama;bir;3
+Unigram;chiqdi;çıktı;3
+Unigram;kichik;küçük;5
+Unigram;qilinadigan;bir;3
+Unigram;rasmli;resimli;3
+Unigram;narsalar;ne;4
+Unigram;bolam;kuzenim;12
+Unigram;hech;bir;16
+Unigram;bolgan;bir;6
+Unigram;erga;yere;7
+Unigram;chindan;için;5
+Unigram;qilay;küçük;2
+Unigram;yo;bir;10
+Unigram;ozimni;kendimi;16
+Unigram;sira;hızlı;2
+Unigram;sizga;size;3
+Unigram;necha;birkaç;13
+Unigram;yil;sene;6
+Unigram;avval;evvel;4
+Unigram;siz;bir;6
+Unigram;odamlarga;de;2
+Unigram;harholda;bir;6
+Unigram;shunday;bir;10
+Unigram;emasmi;değil;4
+Unigram;yigit;bir;2
+Unigram;kozlarini;gözlerini;7
+Unigram;nega;bir;8
+Unigram;on;bir;5
+Unigram;kirib;bir;9
+Unigram;qolgan;bir;12
+Unigram;qizga;bir;5
+Unigram;hamon;devam;3
+Unigram;yuzimga;yüzüme;5
+Unigram;ozim;ben;4
+Unigram;pushaymon;pişman;3
+Unigram;qochib;gibi;2
+Unigram;edim;bir;19
+Unigram;harakat;bir;7
+Unigram;sal;hemen;2
+Unigram;boyiga;bir;5
+Unigram;etib;ben;5
+Unigram;nihoyatda;bir;3
+Unigram;baxtiyor;mesut;4
+Unigram;qildi;bir;5
+Unigram;sorash;size;2
+Unigram;chunki;çünkü;3
+Unigram;aytgan;de;2
+Unigram;komronning;kâmranın;12
+Unigram;albatta;bu;4
+Unigram;turib;bir;7
+Unigram;javob;cevap;7
+Unigram;qollarimni;ellerimi;7
+Unigram;oynay;bir;4
+Unigram;boshladim;başladım;10
+Unigram;yuziga;yüzüne;5
+Unigram;qaradim;bir;4
+Unigram;sochlarimni;saçlarımı;5
+Unigram;yaxshi;bir;11
+Unigram;korib;bir;9
+Unigram;kop;çok;8
+Unigram;buni;bunu;7
+Unigram;faqat;yalnız;10
+Unigram;tomosha;ben;1
+Unigram;olib;bir;14
+Unigram;narsalarni;bir;5
+Unigram;qara;bak;2
+Unigram;masalan;meselâ;3
+Unigram;mana;sen;2
+Unigram;oldin;evvelâ;2
+Unigram;qanday;bir;14
+Unigram;ming;uslu;2
+Unigram;nozik;nazik;4
+Unigram;boladi;diyebilirim;3
+Unigram;konfetni;ve;2
+Unigram;silab;okşıyarak;3
+Unigram;uni;bir;9
+Unigram;galati;bir;10
+Unigram;ochib;bu;2
+Unigram;kelgan;bir;6
+Unigram;ozing;kadar;2
+Unigram;bolsang;olursan;2
+Unigram;shuni;ki;2
+Unigram;ber;bir;2
+Unigram;degan;bir;7
+Unigram;gap;bu;5
+Unigram;birov;bir;5
+Unigram;narsadan;bir;4
+Unigram;nimalar;neler;1
+Unigram;shoshib;bir;4
+Unigram;birdan;birdenbire;7
+Unigram;tilimni;dilimi;2
+Unigram;sizning;diye;2
+Unigram;bunaqa;böyle;3
+Unigram;shekilli;diye;2
+Unigram;ajoyib;kadar;4
+Unigram;boshimni;başımı;10
+Unigram;orqaga;arkaya;3
+Unigram;tashlab;kendi;3
+Unigram;ustiga;bir;2
+Unigram;qoydim;bir;3
+Unigram;sekinsekin;yavaş;10
+Unigram;ikki;iki;10
+Unigram;tomonga;doğru;4
+Unigram;qadar;kadar;6
+Unigram;tikilib;bakıyordu;3
+Unigram;tutolmay;kendimi;2
+Unigram;narsani;bir;2
+Unigram;bitta;bir;14
+Unigram;qilaman;şimdi;1
+Unigram;хohlamayman;istemem;2
+Unigram;buning;bunun;3
+Unigram;sorab;bir;3
+Unigram;song;sonra;18
+Unigram;eshitildi;bir;2
+Unigram;singari;gibi;16
+Unigram;turdim;kedi;1
+Unigram;birining;birinin;4
+Unigram;tovush;bir;5
+Unigram;hozir;şimdi;4
+Unigram;eshik;kapının;3
+Unigram;orqasida;bir;3
+Unigram;sezilib;bir;2
+Unigram;turardi;bir;5
+Unigram;bolamga;kuzenime;3
+Unigram;soldim;bir;4
+Unigram;nimalarni;ne;3
+Unigram;kordim;bir;4
+Unigram;kattakon;bir;10
+Unigram;mishel;mişel;3
+Unigram;biron;bir;9
+Unigram;bizni;bizi;8
+Unigram;qiz;bir;6
+Unigram;bizga;bize;7
+Unigram;ikkalamiz;bir;3
+Unigram;xudo;allah;5
+Unigram;ochiq;açık;2
+Unigram;qoladi;diye;2
+Unigram;qollari;diye;2
+Unigram;orasiga;diye;2
+Unigram;хop;peki;4
+Unigram;berdi;bu;2
+Unigram;turkcha;türkçe;3
+Unigram;shuning;onun;2
+Unigram;har;her;16
+Unigram;ovoz;ses;2
+Unigram;bas;bir;5
+Unigram;esimdan;kâmrana;1
+Unigram;qolibdi;bir;2
+Unigram;komronga;kâmrana;3
+Unigram;beri;beri;4
+Unigram;chorbogda;köşkte;3
+Unigram;yurib;bir;5
+Unigram;osgan;bir;2
+Unigram;hayron;gibi;2
+Unigram;ketardi;bir;4
+Unigram;bilaman;biliyorum;2
+Unigram;qaydam;ne;3
+Unigram;bolani;bu;3
+Unigram;koramanki;seviyorum;3
+Unigram;nimasi;bu;3
+Unigram;bechoraning;bu;2
+Unigram;qiladi;ne;3
+Unigram;ha;evet;6
+Unigram;koraman;seviyorum;2
+Unigram;sozini;o;2
+Unigram;esa;bir;7
+Unigram;ogiz;kelime;2
+Unigram;sevgi;bir;4
+Unigram;kabi;gibi;8
+Unigram;sozlar;gibi;2
+Unigram;olar;bir;4
+Unigram;yoki;bir;8
+Unigram;komronni;kâmranı;5
+Unigram;qaerdan;nereden;4
+Unigram;birdaniga;birdenbire;5
+Unigram;uyga;bir;3
+Unigram;ana;bir;4
+Unigram;bolaga;bir;3
+Unigram;mening;benim;9
+Unigram;suvenir;suvenir;9
+Unigram;ornida;suvenir;9
+Unigram;kelardi;sütninenin;1
+Unigram;aksiga;aksi;3
+Unigram;borardi;bir;2
+Unigram;bolardi;bol;2
+Unigram;qollarini;ellerini;3
+Unigram;tashqariga;dışarı;3
+Unigram;orqamdan;arkamdan;2
+Unigram;kelib;bir;9
+Unigram;boynimga;bir;2
+Unigram;toxtadim;durdum;3
+Unigram;orqamga;bir;5
+Unigram;qaytib;bir;2
+Unigram;tutib;bir;5
+Unigram;qari;ihtiyar;3
+Unigram;ot;gibi;2
+Unigram;his;bir;3
+Unigram;boqqa;bahçeye;2
+Unigram;ketdim;bir;5
+Unigram;titroq;bir;2
+Unigram;ichiga;içine;2
+Unigram;esam;ben;2
+Unigram;odamni;insanı;3
+Unigram;ozi;kendisi;3
+Unigram;maktabga;mektebe;3
+Unigram;shunchalik;o;3
+Unigram;yuragim;çağırmağa;2
+Unigram;butun;bütün;4
+Unigram;desam;diyebilirim;3
+Unigram;orasida;bir;9
+Unigram;rosa;gibi;3
+Unigram;ogzini;bir;2
+Unigram;shuncha;bu;3
+Unigram;tez;hem;1
+Unigram;kun;gün;11
+Unigram;qoldi;bir;5
+Unigram;darajada;kadar;5
+Unigram;seni;seni;5
+Unigram;borib;bir;11
+Unigram;qizarib;ben;2
+Unigram;ketdi;birdenbire;3
+Unigram;ogzingdan;ağzından;2
+Unigram;kishi;de;2
+Unigram;sening;senin;4
+Unigram;ornimdan;hiddetle;1
+Unigram;zorlik;zorla;4
+Unigram;dedimu;dedim;5
+Unigram;kundan;sonra;3
+Unigram;kelganda;zaman;3
+Unigram;bogda;bahçede;3
+Unigram;ochadigan;insanlar;2
+Unigram;yuboradigan;insanı;2
+Unigram;boldim;getirmekte;1
+Unigram;teztez;onun;2
+Unigram;olish;bir;2
+Unigram;chidab;fakat;2
+Unigram;bolmaydigan;bir;3
+Unigram;dam;bir;3
+Unigram;birida;bir;6
+Unigram;biri;bir;3
+Unigram;kuni;bir;20
+Unigram;xat;bir;2
+Unigram;oldim;bir;10
+Unigram;baxtli;bu;5
+Unigram;ketayotgan;bir;3
+Unigram;kuchukchani;bu;3
+Unigram;yubordim;bu;1
+Unigram;mehmon;misafir;6
+Unigram;eridan;bayırın;2
+Unigram;oxshaydi;bu;2
+Unigram;bechora;zavallı;10
+Unigram;gal;bu;4
+Unigram;zora;bu;4
+Unigram;najmiya;necmiye;5
+Unigram;oxshab;gibi;2
+Unigram;xotima;ya;2
+Unigram;boshimga;bir;5
+Unigram;soradim;dedim;2
+Unigram;xonim;hanım;3
+Unigram;voy;ay;1
+Unigram;marta;birkaç;3
+Unigram;otib;bir;5
+Unigram;atrofida;etrafında;2
+Unigram;yoz;yaz;3
+Unigram;chiqdim;o;2
+Unigram;aziz;aziz;3
+Unigram;pochcham;aziz;3
+Unigram;xolamga;teyzeme;2
+Unigram;mujgon;müjgân;59
+Unigram;mendan;bir;2
+Unigram;uch;üç;3
+Unigram;ichida;bir;3
+Unigram;bunga;bu;4
+Unigram;parvo;müjgân;1
+Unigram;qaramay;rağmen;5
+Unigram;opam;bir;3
+Unigram;opa;abla;12
+Unigram;tamom;benim;2
+Unigram;qanchalik;kadar;6
+Unigram;ogir;gibi;3
+Unigram;bazan;bazan;3
+Unigram;qarshi;karşı;2
+Unigram;oysha;ayşe;6
+Unigram;xolam;bir;7
+Unigram;istambulga;bir;4
+Unigram;chaqirib;bir;10
+Unigram;basima;besime;4
+Unigram;bolmasa;bir;2
+Unigram;ketsa;teyzeme;2
+Unigram;biz;bize;6
+Unigram;bolmagan;bir;2
+Unigram;qilishardi;imkânı;1
+Unigram;erning;tekrar;2
+Unigram;joy;izniniz;1
+Unigram;olsam;olursa;2
+Unigram;kotarib;bir;3
+Unigram;qizlar;gibi;2
+Unigram;tushib;bir;6
+Unigram;rozi;razı;3
+Unigram;dengizga;denize;5
+Unigram;yugurib;gibi;3
+Unigram;mujgonni;müjgânı;4
+Unigram;odamning;kadar;4
+Unigram;ketdik;doğru;3
+Unigram;mujgonning;müjgânın;12
+Unigram;bolishini;bir;3
+Unigram;ularning;bir;3
+Unigram;jiddiy;ciddî;2
+Unigram;menda;pırıl;2
+Unigram;qancha;yalnız;2
+Unigram;ular;onlar;3
+Unigram;yolgiz;yalnız;5
+Unigram;dengiz;bir;9
+Unigram;boyidagi;bir;3
+Unigram;oxshagan;bir;5
+Unigram;yol;bir;5
+Unigram;boyi;yürüye;2
+Unigram;tosh;taş;4
+Unigram;boyida;yürüye;2
+Unigram;ketib;yürüye;2
+Unigram;edik;bir;7
+Unigram;sokin;benziyen;2
+Unigram;chiqarib;hele;1
+Unigram;хayriyatki;bereket;4
+Unigram;sezib;bir;4
+Unigram;ikkimiz;bir;3
+Unigram;burunga;bir;3
+Unigram;oyoq;bir;2
+Unigram;echib;çıkararak;2
+Unigram;suvga;bir;3
+Unigram;jinni;deli;3
+Unigram;koramiz;dedi;2
+Unigram;qolimdan;müjgân;4
+Unigram;qilma;etme;3
+Unigram;qoyvor;bırak;3
+Unigram;kuldi;müjgân;2
+Unigram;yalang;bir;4
+Unigram;olamiz;arkadakiler;2
+Unigram;yoqotib;bir;2
+Unigram;yumib;bir;6
+Unigram;oldi;bir;5
+Unigram;xuddi;bir;4
+Unigram;betlamay;cesaret;3
+Unigram;deng;ne;3
+Unigram;tortib;arkama;2
+Unigram;qoyilgan;bir;2
+Unigram;otirgan;bir;3
+Unigram;baliqchi;bir;5
+Unigram;boladimi;bir;2
+Unigram;qisib;müjgân;2
+Unigram;ahvolda;hakikaten;2
+Unigram;bosib;o;3
+Unigram;dengizning;denizin;3
+Unigram;baliq;bir;3
+Unigram;chol;ihtiyar;3
+Unigram;marika;marika;4
+Unigram;yuribdi;için;3
+Unigram;kechqurun;akşam;3
+Unigram;sayr;bir;2
+Unigram;ofitser;zâbit;2
+Unigram;yonimizdan;yanımızdan;4
+Unigram;daraxtlar;bir;6
+Unigram;orqasiga;bir;4
+Unigram;orqasidan;arkasından;3
+Unigram;emasmanku;ben;3
+Unigram;sen;sen;7
+Unigram;orasidan;sen;1
+Unigram;gaplashib;doğru;2
+Unigram;berdim;ona;2
+Unigram;deding;dedin;5
+Unigram;senga;sana;5
+Unigram;kozlarimni;bir;5
+Unigram;betimga;olsun;2
+Unigram;oladigan;bir;2
+Unigram;ochilib;bir;4
+Unigram;ota;başladım;3
+Unigram;otgan;bir;3
+Unigram;ozdan;sonra;8
+Unigram;aytib;müjgâna;2
+Unigram;kirishdim;başladım;2
+Unigram;hojati;buna;2
+Unigram;mujgonga;müjgâna;6
+Unigram;mahal;bir;5
+Unigram;tashladim;o;2
+Unigram;astasekin;yavaş;2
+Unigram;bordi;yavaş;2
+Unigram;mujgondan;müjgândan;4
+Unigram;bitirib;ve;3
+Unigram;urib;halde;2
+Unigram;ozini;bağıra;2
+Unigram;titrab;ben;1
+Unigram;hali;bir;4
+Unigram;shundan;ve;2
+Unigram;yomon;o;1
+Unigram;negadir;bir;2
+Unigram;yoqqa;bir;2
+Unigram;tong;beni;2
+Unigram;ichimda;bir;2
+Unigram;silar;bir;2
+Unigram;kecha;gece;6
+Unigram;yaqin;bütün;1
+Unigram;ketgan;bir;4
+Unigram;uxlab;o;2
+Unigram;qoldim;bir;4
+Unigram;chorbog;de;2
+Unigram;bolalarni;çocukları;3
+Unigram;otga;bir;3
+Unigram;qila;ayşe;1
+Unigram;хolam;teyzem;8
+Unigram;qolidan;müjgânı;2
+Unigram;ertalab;bir;4
+Unigram;darrov;iki;2
+Unigram;kishiga;bir;2
+Unigram;oqshom;akşam;2
+Unigram;uncha;bir;3
+Unigram;uzoq;bir;2
+Unigram;orqada;teyzem;1
+Unigram;chang;yapış;2
+Unigram;maymunjonlar;ve;2
+Unigram;it;bir;5
+Unigram;ikkovimiz;kadar;2
+Unigram;boshiga;arkadakiler;1
+Unigram;erkak;bir;3
+Unigram;ulardan;sonra;2
+Unigram;qiziq;bir;2
+Unigram;hayajon;bir;3
+Unigram;qolimni;arkama;2
+Unigram;qolishdi;bir;3
+Unigram;a;şemsiyesiz;1
+Unigram;jahl;hiddetle;4
+Unigram;yot;yabancı;2
+Unigram;davom;devam;3
+Unigram;kimga;sabaha;1
+Unigram;ohangda;bir;2
+Unigram;mehmonga;misafir;4
+Unigram;el;misafir;3
+Unigram;bolmaydi;misafir;3
+Unigram;betimni;çenemi;2
+Unigram;boshini;başını;3
+Unigram;bugun;bir;3
+Unigram;ropara;zaman;3
+Unigram;ketar;ve;3
+Unigram;aravaga;bir;3
+Unigram;zina;merdiven;3
+Unigram;erimni;o;4
+Unigram;eski;eski;2
+Unigram;yangi;yeni;2
+Unigram;tor;biraz;2
+Unigram;axir;bir;2
+Unigram;daraxt;bir;2
+Unigram;ogirib;bir;2
+Unigram;hol;bana;1
+Unigram;yoniga;bir;3
+Unigram;qoldirib;beni;2
+Unigram;baliqchining;bir;4
+Unigram;shayton;şeytan;2
+Unigram;er;gibi;2
+Unigram;orasira;hızlı;4
+Unigram;eng;en;8
+Unigram;bolaman;o;3
+Unigram;hamma;her;3
+Unigram;itni;bir;3
+Unigram;picha;haydi;4
+Unigram;qoyar;hızlı;2
+Unigram;qoli;hızlı;2
+Unigram;qizim;kızım;3
+Unigram;argimchoq;bir;4
+Unigram;aylanay;ne;1
+Unigram;chetga;birer;2
+Unigram;argimchoqqa;salıncağa;3
+Unigram;tezroq;daha;5
+Unigram;ojarlik;inatla;2
+Unigram;tizzalarim;dizlerim;2
+Unigram;yiqilib;düşüp;2
+Unigram;qorqmaymiz;korkmayız;16
+Unigram;xolamning;teyzemin;4
+Unigram;hayda;haydi;8
+Unigram;arqon;iplerin;3
+Unigram;bolalik;çocukluk;2
+Unigram;xola;teyze;6
+Unigram;unashilgan;nişanlı;6
+Unigram;uzuk;bir;4
+Unigram;taqib;bir;5
+Bigram;bor farida;feride dedi;2
+Bigram;bolgani uchun;olduğu için;2
+Bigram;va na;bunları ne;1
+Bigram;kim biladi;kim bilir;4
+Bigram;yosh bola;artık işi;1
+Bigram;qolmagan edi;artık işi;1
+Bigram;kerak edi;lâzım geliyordu;2
+Bigram;komron bu;kâmran bu;2
+Bigram;bu safar;bu sefer;4
+Bigram;yana ham;kâmran bu;1
+Bigram;deb oylayman;kâmran bu;2
+Bigram;farida dedi;feride dedi;8
+Bigram;bolsa kerak;her halde;2
+Bigram;nima qilay;ona küçük;1
+Bigram;hech narsa;hiçbir şey;2
+Bigram;ozim ham;ben de;2
+Bigram;harakat bilan;bir hareketle;4
+Bigram;shunday bolsa;böyle olmakla;2
+Bigram;hech qanday;bak meselâ;1
+Bigram;bolsam kerak;her halde;3
+Bigram;lekin men;fakat ben;2
+Bigram;shu qadar;o kadar;3
+Bigram;galati bir;tuhaf bir;2
+Bigram;oxshash bir;sonra levhalardan;1
+Bigram;sezilib turardi;şimdi de;1
+Bigram;shuning uchun;onun için;2
+Bigram;har qanday;her hangi;2
+Bigram;yaxshi koramanki;seviyorum ki;3
+Bigram;bir harakat;bir hareketle;3
+Bigram;yaxshi koraman;bu seviyorum;1
+Bigram;ham kulib;de gülmeğe;2
+Bigram;aksiga olib;aksi gibi;3
+Bigram;men bu;ben bu;2
+Bigram;chiqib ketdim;bu sefer;2
+Bigram;bilan birga;vücudumda yanma;1
+Bigram;men esam;musluğun suları;1
+Bigram;desam boladi;bütün sınıf;1
+Bigram;bir kun;bir gün;3
+Bigram;meni ham;beni de;3
+Bigram;lekin bu;fakat bu;4
+Bigram;men uchun;bir şey;2
+Bigram;bir narsa;bir şey;5
+Bigram;bu gal;bu sefer;4
+Bigram;gal zora;bu sefer;4
+Bigram;zora baxtli;bu sefer;4
+Bigram;baxtli bolsa;bu sefer;4
+Bigram;bolsa bechora;bu sefer;3
+Bigram;deb soradim;hanımefendi tekrar;1
+Bigram;men ham;ben de;8
+Bigram;aziz pochcham;aziz eniştem;2
+Bigram;mujgon opam;müjgân abla;3
+Bigram;oysha xolam;ayşe teyzemle;5
+Bigram;xolam bilan;ayşe teyzemle;4
+Bigram;ham men;gelmezse eniştesi;1
+Bigram;mujgon ham;müjgân da;4
+Bigram;basima xolam;besime teyzem;2
+Bigram;boladi deb;imkânı var;1
+Bigram;har kun;her gün;3
+Bigram;ham lekin;bu misafirlikler;1
+Bigram;bir kuni;bir gün;7
+Bigram;mujgon ikkimiz;bir gün;1
+Bigram;mujgon opa;müjgân abla;3
+Bigram;bechora mujgon;zavallı müjgân;3
+Bigram;osha kuni;o gün;2
+Bigram;u ham;o da;3
+Bigram;yurib ketdim;bir an;1
+Bigram;mujgon meni;müjgân beni;4
+Bigram;nega bunday;müjgân beni;1
+Bigram;u yana;o yine;2
+Bigram;deb soradi;ne demek;1
+Bigram;bizni ham;bizi de;4
+Bigram;seni deb;senin için;3
+Bigram;dengiz tomonga;denize doğru;2
+Bigram;deb javob;diye cevap;2
+Bigram;tovush bilan;bir sesle;3
+Bigram;ota boshladim;atmağa başladım;2
+Bigram;bir ozdan;biraz sonra;7
+Bigram;ozdan keyin;biraz sonra;3
+Bigram;ham hech;fakat arasıra;1
+Bigram;uchun emas;için değil;6
+Bigram;shundan keyin;ve kendimi;1
+Bigram;bolsam ham;galiba o;1
+Bigram;bilan mujgon;ayşe teyzemle;2
+Bigram;bir mahal;bir aralık;3
+Bigram;men bolsam;ben bilâkis;2
+Bigram;ham shunday;ben de;2
+Bigram;ozdan song;biraz sonra;4
+Bigram;qanday qilib;o gün;2
+Bigram;jahl bilan;yere vurdum;2
+Bigram;mehmon mehmonga;misafir misafiri;3
+Bigram;mehmonga el;misafir misafiri;3
+Bigram;el bolmaydi;misafir misafiri;3
+Bigram;bugun ham;peki dedim;1
+Bigram;bir nima;bir şey;2
+Bigram;ketar edim;karşı karşıya;1
+Bigram;teztez yurib;yürümeğe başladım;2
+Bigram;qoli bilan;daha garibi;1
+Bigram;xola dedim;teyze dedim;3
+Bigram;hech kim;kimse bana;2
+Trigram;ham bir oz;biraz da ona;1
+Trigram;shunday bolsa ham;fakat öyle de;1
+Trigram;bir harakat bilan;garip bir hareketle;1
+Trigram;bu gal zora;bu sefer bari;2
+Trigram;gal zora baxtli;bu sefer bari;2
+Trigram;zora baxtli bolsa;bu sefer bari;2
+Trigram;bir ozdan keyin;maamafih biraz sonra;1
+Trigram;mehmon mehmonga el;misafir misafiri çekemez;3
+Trigram;mehmonga el bolmaydi;misafir misafiri çekemez;3
