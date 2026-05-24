@@ -11,6 +11,7 @@ st.markdown("""
 <style>
     .highlight { background-color: #FDE047 !important; color: #000000 !important; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
     .sentence-container { background-color: #FFFFFF; padding: 15px 20px; border-radius: 6px; border-left: 5px solid #1E3A8A; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 10px; font-size: 16px; color: #1E293B; }
+    .stat-box { background-color: #EFF6FF; padding: 15px; border-radius: 8px; border: 1px solid #BFDBFE; margin-bottom: 20px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -76,34 +77,80 @@ def analyze_text_statistics(df_corpus):
     filtered_words = [w for w in words if w not in stop_words and len(w) > 2]
     return Counter(filtered_words).most_common(20), Counter([f"{filtered_words[i]} {filtered_words[i+1]}" for i in range(len(filtered_words) - 1)]).most_common(10)
 
-UMUMIY_FOLDER = "data/umumiy" if os.path.exists("data/umumiy") else "umumiy"
+def show_kwic_search(df_src, key_prefix):
+    col_inp, col_btn = st.columns([5, 1])
+    with col_inp:
+        q = st.text_input("So'z yoki o'zakni kiriting:", placeholder="Masalan: bola, matbuot...", key=f"inp_{key_prefix}")
+    with col_btn:
+        st.write("<br>", unsafe_allow_html=True)
+        lupa = st.button("🔍 Qidirish", key=f"btn_{key_prefix}")
+        
+    if q.strip() or lupa:
+        word = q.strip()
+        if word:
+            pat = re.compile(rf"({re.escape(word)}[b-df-hj-np-rt-vxz'aouei‘g‘shch]*)", re.IGNORECASE)
+            res = df_src[df_src['Gap'].apply(lambda x: bool(pat.search(x)))] if not df_src.empty else pd.DataFrame()
+            
+            if not res.empty:
+                # Dinamik statistikani hisoblash
+                jami_marta = 0
+                fayllar = set()
+                topilgan_shakllar = []
+                
+                for _, r in res.iterrows():
+                    matches = pat.findall(r['Gap'])
+                    jami_marta += len(matches)
+                    fayllar.add(r['Fayl'])
+                    topilgan_shakllar.extend([m.lower() for m in matches])
+                
+                st.markdown(f"""
+                <div class="stat-box">
+                    <h4>📊 Qidiruv statistikasi ("{word}"):</h4>
+                    <ul>
+                        <li><b>Uchrashish soni (Chastota):</b> {jami_marta} marta kelgan</li>
+                        <li><b>Matnlar qamrovi:</b> {len(fayllar)} ta alohida faylda ishlatilgan</li>
+                    </ul>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Dinamik chastotali lug'at (Qidirilgan kontekst bo'yicha)
+                st.write("📋 **Topilgan so'z shakllarining dinamik chastotasi:**")
+                df_shakllar = pd.DataFrame(Counter(top_reported for top_reported in top_shapes if isinstance(top_reported, str) else str(top_reported) for top_shapes in [top_reported for top_reported in top_shakllar]).most_common(), columns=["So'z shakli", "Chastota"])
+                df_shakllar = pd.DataFrame(Counter(top_shakllar).most_common(), columns=["So'z shakli", "Chastota"])
+                st.dataframe(df_shakllar, use_container_width=True)
+                
+                st.write("🔍 **Kontekstlar ro'yxati (KWIC):**")
+                for _, r in res.iterrows():
+                    highlighted_sentence = pat.sub(r'<span class="highlight">\g<1></span>', r['Gap'])
+                    st.markdown(f'<div class="sentence-container">{highlighted_sentence}</div>', unsafe_allow_html=True)
+                    with st.expander("Metama'lumotlar"): 
+                        st.write({k: v for k, v in r.to_dict().items() if k not in ["Gap", "Fayl"]})
+            else: st.warning("Korpus bazasidan ushbu so'z topilmadi.")
+                UMUMIY_FOLDER = "data/umumiy" if os.path.exists("data/umumiy") else "umumiy"
 PUBLISTISTIKA_FOLDER = "data/publististika" if os.path.exists("data/publististika") else "publististika"
 
-st.sidebar.markdown("### 🧭 NAVIGATION")
-page = st.sidebar.radio("Tanlang:", ["🏠 Bosh sahifa", "📂 Umumiy korpus", "🌐 Parallel korpus", "✍️ Publististik korpus"])
+st.sidebar.markdown("### 🧭 KORPUS NAVIGATSIYASI")
+page = st.sidebar.radio("Bo'limni tanlang:", ["🏠 Bosh sahifa", "📂 Umumiy korpus", "🌐 Parallel korpus", "✍️ Publististik korpus"])
 
 if page == "🏠 Bosh sahifa":
     st.title("O'ZBEK TILI KORPUSI")
     df_u = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt", "docx")
     df_p = load_korpus_baza(PUBLISTISTIKA_FOLDER, 21, "pub.", "teg.", "txt", "docx")
     c1, c2, c3 = st.columns(3)
-    c1.success(f"📂 Umumiy korpus\n\n{len(df_u)} ta gap")
+    c1.success(f"📂 Umumiy korpus\n\n{len(df_u):,} ta gap")
     c2.info("🌐 Parallel korpus\n\nO'zbek-Turk tili")
-    c3.warning(f"✍️ Publististik korpus\n\n{len(df_p)} ta gap")
+    c3.warning(f"✍️ Publististik korpus\n\n{len(df_p):,} ta gap")
 
 elif page == "📂 Umumiy korpus":
     df = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt", "docx")
     st.title("📂 Umumiy korpus")
-    q = st.text_input("So'z kiriting:")
-    if q.strip():
-        pat = re.compile(rf"({re.escape(q.strip())}[b-df-hj-np-rt-vxz'aouei‘g‘shch]*)", re.IGNORECASE)
-        res = df[df['Gap'].apply(lambda x: bool(pat.search(x)))] if not df.empty else pd.DataFrame()
-        if not res.empty:
-            st.success(f"{len(res)} ta gap topildi.")
-            for _, r in res.iterrows():
-                st.markdown(f'<div class="sentence-container">{pat.sub(r"<span class=\"highlight\">\g<1></span>", r["Gap"])}</div>', unsafe_allow_html=True)
-                with st.expander("Metama'lumotlar"): st.write({k: v for k, v in r.to_dict().items() if k not in ["Gap", "Fayl"]})
-        else: st.warning("Topilmadi.")
+    t_u1, t_u2 = st.tabs(["🔍 Kontekstli qidiruv (KWIC)", "📊 Umumiy chastotali lug'at"])
+    with t_u1:
+        show_kwic_search(df, "umumiy")
+    with t_u2:
+        xlsx_path = os.path.join(UMUMIY_FOLDER, "chastota.xlsx")
+        if not os.path.exists(xlsx_path) and os.path.exists("umumiy/chastota.xlsx"): xlsx_path = "umumiy/chastota.xlsx"
+        if os.path.exists(xlsx_path): st.dataframe(pd.read_excel(xlsx_path), use_container_width=True)
 
 elif page == "🌐 Parallel korpus":
     st.title("🌐 O'zbek-Turk Parallel Korpusi")
@@ -115,16 +162,7 @@ elif page == "✍️ Publististik korpus":
     t1, t2, t3 = st.tabs(["🔍 KWIC Qidiruv", "📊 Diskurs tahlil", "🏛️ Mafkuraviy tahlil"])
     
     with t1:
-        q_p = st.text_input("Publististikadan so'z kiriting:")
-        if q_p.strip():
-            pat = re.compile(rf"({re.escape(q_p.strip())}[b-df-hj-np-rt-vxz'aouei‘g‘shch]*)", re.IGNORECASE)
-            res = df_pub[df_pub['Gap'].apply(lambda x: bool(pat.search(x)))] if not df_pub.empty else pd.DataFrame()
-            if not res.empty:
-                st.success(f"{len(res)} ta gap topildi.")
-                for _, r in res.iterrows():
-                    st.markdown(f'<div class="sentence-container">{pat.sub(r"<span class=\"highlight\">\g<1></span>", r["Gap"])}</div>', unsafe_allow_html=True)
-                    with st.expander("Metama'lumotlar"): st.write({k: v for k, v in r.to_dict().items() if k not in ["Gap", "Fayl"]})
-            else: st.warning("Topilmadi.")
+        show_kwic_search(df_pub, "pub")
             
     with t2:
         words, bigrams = analyze_text_statistics(df_pub)
