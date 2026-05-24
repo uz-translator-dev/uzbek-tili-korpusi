@@ -94,13 +94,11 @@ def show_kwic_search(df_src, key_prefix):
             if not res.empty:
                 jami_marta = 0
                 fayllar = set()
-                topilgan_shakllar = []
                 
                 for _, r in res.iterrows():
                     matches = pat.findall(r['Gap'])
                     jami_marta += len(matches)
                     fayllar.add(r['Fayl'])
-                    topilgan_shakllar.extend([m.lower() for m in matches])
                 
                 st.markdown(f"""
                 <div class="stat-box">
@@ -111,10 +109,6 @@ def show_kwic_search(df_src, key_prefix):
                     </ul>
                 </div>
                 """, unsafe_allow_html=True)
-                
-                st.write("📋 **Topilgan so'z shakllarining dinamik chastotasi:**")
-                df_shakllar = pd.DataFrame(Counter(top_reported for top_reported in top_shakllar if isinstance(top_reported, str)).most_common(), columns=["So'z shakli", "Chastota"])
-                st.dataframe(df_shakllar, use_container_width=True)
                 
                 st.write("🔍 **Kontekstlar ro'yxati (KWIC):**")
                 for _, r in res.iterrows():
