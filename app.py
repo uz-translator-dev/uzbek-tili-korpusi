@@ -7,12 +7,13 @@ from docx import Document
 # Sahifa sozlamalari
 st.set_page_config(page_title="O'ZBEK TILI KORPUSI", layout="wide")
 
+# Vizual uslublar (Dizayn talablaringiz asosida)
 st.markdown("""
 <style>
     .stApp { background-color: #F0F7FF !important; }
-    .main-header { font-family: 'Segoe UI', sans-serif; font-size: 46px; color: #1E3A8A !important; font-weight: 800; text-align: center; margin-top: 30px; }
-    .search-title { font-family: 'Georgia', serif; font-size: 24px; color: #334155 !important; font-style: italic; text-align: center; margin-bottom: 40px; }
-    .corpus-box { background-color: #D1FAE5 !important; border: 2px solid #10B981 !important; border-radius: 12px; padding: 30px 20px; text-align: center; margin-bottom: 15px; }
+    .main-header { font-family: 'Segoe UI', sans-serif; font-size: 46px; color: #1E3A8A !important; font-weight: 800; text-align: center; margin-top: 10px; }
+    .search-title { font-family: 'Georgia', serif; font-size: 24px; color: #334155 !important; font-style: italic; text-align: center; margin-bottom: 30px; }
+    .corpus-box { background-color: #D1FAE5 !important; border: 2px solid #10B981 !important; border-radius: 12px; padding: 25px 15px; text-align: center; margin-bottom: 15px; }
     .card-title { color: #065F46 !important; font-size: 22px; font-weight: bold; }
     .card-stat { color: #4B5563 !important; font-size: 14px; }
     .card-desc { color: #047857 !important; font-size: 15px; font-style: italic; }
@@ -24,19 +25,23 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# 1. DOCX teglarini xavfsiz o'qish (Error bermaydigan mustahkam versiya)
 def extract_tags_from_docx(docx_path):
     tags = {}
     if os.path.exists(docx_path):
         try:
             doc = Document(docx_path)
-            for row in doc.tables[0].rows:
-                if len(row.cells) >= 2:
-                    key = row.cells[0].text.strip()
-                    value = row.cells[1].text.strip()
-                    if key: tags[key] = value
-        except: pass
+            if doc.tables and len(doc.tables) > 0:
+                for row in doc.tables[0].rows:
+                    if len(row.cells) >= 2:
+                        key = row.cells[0].text.strip()
+                        value = row.cells[1].text.strip()
+                        if key: tags[key] = value
+        except Exception:
+            pass  # Agar docx ochilmasa yoki jadval bo'lmasa, dastur to'xtab qolmaydi
     return tags
 
+# 2. Korpus yuklash bazasi (Xatoliklardan himoyalangan)
 @st.cache_data
 def load_korpus_baza(folder, file_count, prefix_txt, prefix_docx, ext_txt, ext_docx):
     data = []
@@ -45,64 +50,72 @@ def load_korpus_baza(folder, file_count, prefix_txt, prefix_docx, ext_txt, ext_d
     
     if os.path.exists(txt_d):
         for i in range(1, file_count + 1):
-            # Fayl nomlash formatini siz aytgandek dinamik qildik
             t_p = os.path.join(txt_d, f"{prefix_txt}{i}.{ext_txt}")
             d_p = os.path.join(docx_d, f"{prefix_docx}{i}.{ext_docx}")
             
             if os.path.exists(t_p):
                 tags = extract_tags_from_docx(d_p)
-                with open(t_p, 'r', encoding='utf-8') as f:
-                    sentences = re.split(r'(?<=[.!?])\s+', f.read())
-                    for s in sentences:
-                        if s.strip():
-                            row_dict = {"Fayl": f"{prefix_txt}{i}.{ext_txt}", "Gap": s.strip()}
-                            for k, v in tags.items(): row_dict[k] = v
-                            data.append(row_dict)
+                try:
+                    with open(t_p, 'r', encoding='utf-8') as f:
+                        text_content = f.read()
+                        sentences = re.split(r'(?<=[.!?])\s+', text_content)
+                        for s in sentences:
+                            if s.strip():
+                                row_dict = {"Fayl": f"{prefix_txt}{i}.{ext_txt}", "Gap": s.strip()}
+                                for k, v in tags.items(): row_dict[k] = v
+                                data.append(row_dict)
+                except Exception:
+                    pass
     return pd.DataFrame(data)
-
-if 'page' not in st.session_state: 
-    st.session_state.page = 'home'
 
 UMUMIY_FOLDER = "data/umumiy"
 PUBLISTISTIKA_FOLDER = "data/publististika"
 
-if st.session_state.page != 'home':
-    if st.button("⬅️ KORPUSLAR BO'YICHA QIDIRUV (Bosh sahifa)"):
-        st.session_state.page = 'home'
-        st.rerun()
+# --- 🧭 NAVIGATSIYA PANEL (SIDEBAR) ---
+# Bu tizim sizga har qanday sahifadan darhol bosh interfeysga qaytish imkonini beradi
+st.sidebar.markdown("### 🧭 KORPUS NAVIGATSIYASI")
+page_selection = st.sidebar.radio(
+    "Bo'limni tanlang:",
+    ["🏠 Bosh sahifa", "📂 Umumiy korpus", "🌐 Parallel korpus", "✍️ Publististik matnlar korpusi"]
+)
 
-# --- BOSH SAHIFA ---
-if st.session_state.page == 'home':
+# =========================================================
+# 🏠 1. BOSH SAHIFA
+# =========================================================
+if page_selection == "🏠 Bosh sahifa":
     st.markdown('<div class="main-header">O\'ZBEK TILI KORPUSI</div>', unsafe_allow_html=True)
     st.markdown('<div class="search-title">KORPUSLAR BO\'YICHA QIDIRUV</div>', unsafe_allow_html=True)
     
-    # Umumiy korpus: text_1.txt formatida
+    # Statistika ko'rsatkichlari
     df_um_temp = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt", "docx")
     total_gap_um = len(df_um_temp) if not df_um_temp.empty else 0
+    
+    df_pub_temp = load_korpus_baza(PUBLISTISTIKA_FOLDER, 21, "pub.", "teg.", "txt", "docx")
+    total_gap_pub = len(df_pub_temp) if not df_pub_temp.empty else 0
 
     c1, c2, c3 = st.columns(3)
     with c1:
         st.markdown(f'<div class="corpus-box"><div class="card-title">Umumiy korpus</div><div class="card-stat">24 ta matn | {total_gap_um:,} ta gap</div><div class="card-desc">(24 ta matn, dinamik hajmli)</div></div>', unsafe_allow_html=True)
-        if st.button("Kirish", key="go_um", use_container_width=True): st.session_state.page = 'um'; st.rerun()
     with c2:
-        st.markdown('<div class="corpus-box"><div class="card-title">Parallel korpus</div><div class="card-stat">O\'zbek-Turk tili</div><div class="card-desc">(Tillararo ulangan)</div></div>', unsafe_allow_html=True)
-        if st.button("Kirish", key="go_par", use_container_width=True): st.session_state.page = 'par'; st.rerun()
+        st.markdown('<div class="corpus-box"><div class="card-title">Parallel korpus</div><div class="card-stat">O\'zbek-Turk tili</div><div class="card-desc">(Tillararo ulangan tizim)</div></div>', unsafe_allow_html=True)
     with c3:
-        # Publististika korpusi: pub.1.txt va teg.1.docx formatida
-        df_pub_temp = load_korpus_baza(PUBLISTISTIKA_FOLDER, 21, "pub.", "teg.", "txt", "docx")
-        total_gap_pub = len(df_pub_temp) if not df_pub_temp.empty else 0
         st.markdown(f'<div class="corpus-box"><div class="card-title">Publististik matnlar korpusi</div><div class="card-stat">21 ta matn | {total_gap_pub:,} ta gap</div><div class="card-desc">(Diskursiv tahlil moduli)</div></div>', unsafe_allow_html=True)
-        if st.button("Kirish", key="go_pub", use_container_width=True): st.session_state.page = 'pub'; st.rerun()
+    
+    st.sidebar.info("💡 Chap tomondagi panel orqali kerakli korpus bo'limiga to'g'ridan-to'g'ri o'tishingiz va istalgan vaqtda Bosh sahifaga qaytishingiz mumkin.")
 
-# --- 1-BO'LIM: UMUMIY KORPUS ---
-elif st.session_state.page == 'um':
+# =========================================================
+# 📂 2. UMUMIY KORPUS
+# =========================================================
+elif page_selection == "📂 Umumiy korpus":
     df = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt", "docx")
     st.title("📂 Umumiy korpus")
+    
     tab1, tab2 = st.tabs(["🔍 Kontekstli qidiruv (KWIC)", "📊 Chastotali lug'at"])
     with tab1:
         col_inp, col_btn = st.columns([5, 1])
         with col_inp: q = st.text_input("So'z kiriting:", placeholder="Masalan: maktab, til...", label_visibility="collapsed")
         with col_btn: lupa_tugmasi = st.button("🔍 Qidirish", use_container_width=True)
+        
         if q.strip() or lupa_tugmasi:
             word = q.strip()
             if word:
@@ -119,21 +132,32 @@ elif st.session_state.page == 'um':
         xlsx_path = os.path.join(UMUMIY_FOLDER, "chastota.xlsx")
         if os.path.exists(xlsx_path): st.dataframe(pd.read_excel(xlsx_path), use_container_width=True)
 
-# --- 2-BO'LIM: PARALLEL KORPUS ---
-elif st.session_state.page == 'par':
-    st.markdown('<div class="inner-header"><h2>🌐 O‘zbek-Turk Parallel Korpusi</h2></div>', unsafe_allow_html=True)
+# =========================================================
+# 🌐 3. PARALLEL KORPUS (Navigatsiya muammosi hal etildi)
+# =========================================================
+elif page_selection == "🌐 Parallel korpus":
+    st.markdown('<div class="inner-header"><h2>🌐 O‘zbek-Turk Parallel Korpusi</h2><p>Tillararo qidiruv tizimi</p></div>', unsafe_allow_html=True)
+    
+    # Asosiy sahifaga osongina qaytish uchun qo'shimcha eslatma tugmasi
+    st.info("ℹ️ Parallel korpus tizimi quyidagi oynada ochiladi. Bosh sahifaga qaytish uchun chap paneldagi navigatsiyadan foydalaning.")
+    
+    # Parallel korpus iframe integratsiyasi
     st.components.v1.iframe("https://uzbek-turk-parallel-korpusi-cnzm5cmc3tkccaysyxai5s.streamlit.app/?embed=true", height=800, scrolling=True)
 
-# --- 3-BO'LIM: PUBLISTISTIK MATNLAR KORPUSI ---
-elif st.session_state.page == 'pub':
+# =========================================================
+# ✍️ 4. PUBLISTISTIK MATNLAR KORPUSI (Xatoliklar bartaraf etildi)
+# =========================================================
+elif page_selection == "✍️ Publististik matnlar korpusi":
     df_pub = load_korpus_baza(PUBLISTISTIKA_FOLDER, 21, "pub.", "teg.", "txt", "docx")
-    st.title("✍️ Publististik matnlar korpusi")
+    st.title("✍️ Publististik matnlar korpusi (50 000 ta so'z)")
+    
     tab_p1, tab_p2, tab_p3 = st.tabs(["🔍 Kontekstli qidiruv (KWIC)", "📊 3-bosqich. Diskurs tahlili", "🏛️ 4-bosqich. Ideologik va ijtimoiy ma’nolarni aniqlash"])
     
     with tab_p1:
         col_inp, col_btn = st.columns([5, 1])
         with col_inp: q_pub = st.text_input("Publististik korpusdan so'z kiriting:", placeholder="Masalan: matbuot, xalq...", label_visibility="collapsed")
         with col_btn: lupa_pub = st.button("🔍 Qidirish", key="l_pub", use_container_width=True)
+        
         if q_pub.strip() or lupa_pub:
             word = q_pub.strip()
             if word:
