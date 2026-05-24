@@ -7,8 +7,16 @@ from docx import Document
 
 st.set_page_config(page_title="O'ZBEK TILI KORPUSI", layout="wide")
 
+# Rasmdagi chiroyli yashil qutilar va interfeys uslublari uchun CSS
 st.markdown("""
 <style>
+    .stApp { background-color: #F0F7FF !important; }
+    .main-header { font-family: 'Segoe UI', sans-serif; font-size: 46px; color: #1E3A8A !important; font-weight: 800; text-align: center; margin-top: 20px; }
+    .search-title { font-family: 'Georgia', serif; font-size: 24px; color: #334155 !important; font-style: italic; text-align: center; margin-bottom: 40px; }
+    .corpus-box { background-color: #D1FAE5 !important; border: 2px solid #10B981 !important; border-radius: 12px; padding: 30px 20px; text-align: center; min-height: 180px; }
+    .card-title { color: #065F46 !important; font-size: 24px; font-weight: bold; margin-bottom: 10px; }
+    .card-stat { color: #4B5563 !important; font-size: 15px; margin-bottom: 8px; }
+    .card-desc { color: #047857 !important; font-size: 16px; font-style: italic; }
     .highlight { background-color: #FDE047 !important; color: #000000 !important; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
     .sentence-container { background-color: #FFFFFF; padding: 15px 20px; border-radius: 6px; border-left: 5px solid #1E3A8A; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 10px; font-size: 16px; color: #1E293B; }
     .stat-box { background-color: #EFF6FF; padding: 15px; border-radius: 8px; border: 1px solid #BFDBFE; margin-bottom: 20px; }
@@ -94,7 +102,6 @@ def show_kwic_search(df_src, key_prefix):
             if not res.empty:
                 jami_marta = 0
                 fayllar = set()
-                
                 for _, r in res.iterrows():
                     matches = pat.findall(r['Gap'])
                     jami_marta += len(matches)
@@ -121,19 +128,60 @@ def show_kwic_search(df_src, key_prefix):
 UMUMIY_FOLDER = "data/umumiy" if os.path.exists("data/umumiy") else "umumiy"
 PUBLISTISTIKA_FOLDER = "data/publististika" if os.path.exists("data/publististika") else "publististika"
 
+# Session state orqali navigatsiyani bog'lash
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "🏠 Bosh sahifa"
+
+# --- Yon panel navigatsiyasi ---
 st.sidebar.markdown("### 🧭 KORPUS NAVIGATSIYASI")
-page = st.sidebar.radio("Bo'limni tanlang:", ["🏠 Bosh sahifa", "📂 Umumiy korpus", "🌐 Parallel korpus", "✍️ Publististik korpus"])
+sidebar_page = st.sidebar.radio(
+    "Bo'limni tanlang:", 
+    ["🏠 Bosh sahifa", "📂 Umumiy korpus", "🌐 Parallel korpus", "✍️ Publististik korpus"],
+    index=["🏠 Bosh sahifa", "📂 Umumiy korpus", "🌐 Parallel korpus", "✍️ Publististik korpus"].index(st.session_state.current_page)
+)
 
-if page == "🏠 Bosh sahifa":
-    st.title("O'ZBEK TILI KORPUSI")
-    df_u = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt", "docx")
-    df_p = load_korpus_baza(PUBLISTISTIKA_FOLDER, 21, "pub.", "teg.", "txt", "docx")
+# Agar sidebardan tanlansa session stateni yangilash
+if sidebar_page != st.session_state.current_page:
+    st.session_state.current_page = sidebar_page
+    st.rerun()
+
+# =========================================================
+# 🏠 1. BOSH SAHIFA (Rasmdagi interfeys to'liq tiklandi)
+# =========================================================
+if st.session_state.current_page == "🏠 Bosh sahifa":
+    st.markdown('<div class="main-header">O\'ZBEK TILI KORPUSI</div>', unsafe_allow_html=True)
+    st.markdown('<div class="search-title">KORPUSLAR BO\'YICHA QIDIRUV</div>', unsafe_allow_html=True)
+    
+    df_u_temp = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt", "docx")
+    total_gap_um = len(df_u_temp) if not df_u_temp.empty else 0
+    
+    df_p_temp = load_korpus_baza(PUBLISTISTIKA_FOLDER, 21, "pub.", "teg.", "txt", "docx")
+    total_gap_pub = len(df_p_temp) if not df_p_temp.empty else 0
+
+    # Yonma-yon chiroyli 3 ta yashil kartochka
     c1, c2, c3 = st.columns(3)
-    c1.success(f"📂 Umumiy korpus\n\n{len(df_u):,} ta gap")
-    c2.info("🌐 Parallel korpus\n\nO'zbek-Turk tili")
-    c3.warning(f"✍️ Publististik korpus\n\n{len(df_p):,} ta gap")
+    with c1:
+        st.markdown(f'<div class="corpus-box"><div class="card-title">Umumiy korpus</div><div class="card-stat">24 ta matn | {total_gap_um:,} ta gap</div><div class="card-desc">(24 ta matn, dinamik hajmli)</div></div>', unsafe_allow_html=True)
+        if st.button("Kirish", key="btn_enter_um", use_container_width=True):
+            st.session_state.current_page = "📂 Umumiy korpus"
+            st.rerun()
+            
+    with c2:
+        st.markdown('<div class="corpus-box"><div class="card-title">Parallel korpus</div><div class="card-stat">O\'zbek-Turk tili</div><div class="card-desc">(Tillararo ulangan)</div></div>', unsafe_allow_html=True)
+        if st.button("Kirish", key="btn_enter_par", use_container_width=True):
+            st.session_state.current_page = "🌐 Parallel korpus"
+            st.rerun()
+            
+    with c3:
+        st.markdown(f'<div class="corpus-box"><div class="card-title">Diskurs korpus</div><div class="card-stat">N-gram tahlili</div><div class="card-desc">(Moslik jadvallari)</div></div>', unsafe_allow_html=True)
+        if st.button("Kirish", key="btn_enter_pub", use_container_width=True):
+            st.session_state.current_page = "✍️ Publististik korpus"
+            st.rerun()
 
-elif page == "📂 Umumiy korpus":
+# =========================================================
+# 📂 2. UMUMIY KORPUS
+# =========================================================
+elif st.session_state.current_page == "📂 Umumiy korpus":
     df = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt", "docx")
     st.title("📂 Umumiy korpus")
     t_u1, t_u2 = st.tabs(["🔍 Kontekstli qidiruv (KWIC)", "📊 Umumiy chastotali lug'at"])
@@ -144,11 +192,22 @@ elif page == "📂 Umumiy korpus":
         if not os.path.exists(xlsx_path) and os.path.exists("umumiy/chastota.xlsx"): xlsx_path = "umumiy/chastota.xlsx"
         if os.path.exists(xlsx_path): st.dataframe(pd.read_excel(xlsx_path), use_container_width=True)
 
-elif page == "🌐 Parallel korpus":
+# =========================================================
+# 🌐 3. PARALLEL KORPUS (Ortga qaytish strilkasi mukammallashtirildi)
+# =========================================================
+elif st.session_state.current_page == "🌐 Parallel korpus":
+    # Bosh sahifaga qaytish uchun strilka tugmasi
+    if st.button("⬅️ Bosh sahifaga qaytish", use_container_width=False):
+        st.session_state.current_page = "🏠 Bosh sahifa"
+        st.rerun()
+        
     st.title("🌐 O'zbek-Turk Parallel Korpusi")
     st.components.v1.iframe("https://uzbek-turk-parallel-korpusi-cnzm5cmc3tkccaysyxai5s.streamlit.app/?embed=true", height=800)
 
-elif page == "✍️ Publististik korpus":
+# =========================================================
+# ✍️ 4. PUBLISTISTIK KORPUS
+# =========================================================
+elif st.session_state.current_page == "✍️ Publististik korpus":
     df_pub = load_korpus_baza(PUBLISTISTIKA_FOLDER, 21, "pub.", "teg.", "txt", "docx")
     st.title("✍️ Publististik matnlar korpusi")
     t1, t2, t3 = st.tabs(["🔍 KWIC Qidiruv", "📊 Diskurs tahlil", "🏛️ Mafkuraviy tahlil"])
