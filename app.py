@@ -7,7 +7,6 @@ from docx import Document
 # Sahifa sozlamalari
 st.set_page_config(page_title="O'ZBEK TILI KORPUSI", layout="wide")
 
-# Vizual uslublar (Dizayn talablaringiz asosida)
 st.markdown("""
 <style>
     .stApp { background-color: #F0F7FF !important; }
@@ -25,7 +24,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 1. DOCX teglarini xavfsiz o'qish
 def extract_tags_from_docx(docx_path):
     tags = {}
     if os.path.exists(docx_path):
@@ -41,17 +39,43 @@ def extract_tags_from_docx(docx_path):
             pass
     return tags
 
-# 2. Korpus yuklash bazasi
 @st.cache_data
 def load_korpus_baza(folder, file_count, prefix_txt, prefix_docx, ext_txt, ext_docx):
     data = []
-    txt_d = os.path.join(folder, "txt_files")
-    docx_d = os.path.join(folder, "docx_files")
     
+    # Katta-kichik harflarni xavfsiz tekshirish uchun qidiruv mexanizmi
+    base_dir = "data"
+    actual_folder = folder
+    
+    if os.path.exists(base_dir):
+        for d in os.listdir(base_dir):
+            if d.lower() == folder.split("/")[-1].lower():
+                actual_folder = os.path.join(base_dir, d)
+                
+    txt_d = os.path.join(actual_folder, "txt_files")
+    docx_d = os.path.join(actual_folder, "docx_files")
+    
+    # Agar Linuxda kichik-katta harf farq qilsa, ularni ham to'g'rilash
+    if os.path.exists(actual_folder):
+        for sub in os.listdir(actual_folder):
+            if sub.lower() == "txt_files": txt_d = os.path.join(actual_folder, sub)
+            if sub.lower() == "docx_files": docx_d = os.path.join(actual_folder, sub)
+
     if os.path.exists(txt_d):
         for i in range(1, file_count + 1):
-            t_p = os.path.join(txt_d, f"{prefix_txt}{i}.{ext_txt}")
-            d_p = os.path.join(docx_d, f"{prefix_docx}{i}.{ext_docx}")
+            t_file_name = f"{prefix_txt}{i}.{ext_txt}"
+            d_file_name = f"{prefix_docx}{i}.{ext_docx}"
+            
+            # Haqiqiy faylni qidirish (Linux mosligi uchun)
+            t_p = os.path.join(txt_d, t_file_name)
+            d_p = os.path.join(docx_d, d_file_name)
+            
+            # Agar fayl nomi Pub.1.txt yoki Txt bo'lsa moslash
+            for f in os.listdir(txt_d):
+                if f.lower() == t_file_name.lower(): t_p = os.path.join(txt_d, f)
+            if os.path.exists(docx_d):
+                for f in os.listdir(docx_d):
+                    if f.lower() == d_file_name.lower(): d_p = os.path.join(docx_d, f)
             
             if os.path.exists(t_p):
                 tags = extract_tags_from_docx(d_p)
@@ -61,7 +85,7 @@ def load_korpus_baza(folder, file_count, prefix_txt, prefix_docx, ext_txt, ext_d
                         sentences = re.split(r'(?<=[.!?])\s+', text_content)
                         for s in sentences:
                             if s.strip():
-                                row_dict = {"Fayl": f"{prefix_txt}{i}.{ext_txt}", "Gap": s.strip()}
+                                row_dict = {"Fayl": os.path.basename(t_p), "Gap": s.strip()}
                                 for k, v in tags.items(): row_dict[k] = v
                                 data.append(row_dict)
                 except Exception:
@@ -71,16 +95,14 @@ def load_korpus_baza(folder, file_count, prefix_txt, prefix_docx, ext_txt, ext_d
 UMUMIY_FOLDER = "data/umumiy"
 PUBLISTISTIKA_FOLDER = "data/publististika"
 
-# --- 🧭 NAVIGATSIYA PANEL (SIDEBAR) ---
+# Navigatsiya paneli
 st.sidebar.markdown("### 🧭 KORPUS NAVIGATSIYASI")
 page_selection = st.sidebar.radio(
     "Bo'limni tanlang:",
     ["🏠 Bosh sahifa", "📂 Umumiy korpus", "🌐 Parallel korpus", "✍️ Publististik matnlar korpusi"]
 )
 
-# =========================================================
-# 🏠 1. BOSH SAHIFA
-# =========================================================
+# --- 🏠 1. BOSH SAHIFA ---
 if page_selection == "🏠 Bosh sahifa":
     st.markdown('<div class="main-header">O\'ZBEK TILI KORPUSI</div>', unsafe_allow_html=True)
     st.markdown('<div class="search-title">KORPUSLAR BO\'YICHA QIDIRUV</div>', unsafe_allow_html=True)
@@ -99,19 +121,50 @@ if page_selection == "🏠 Bosh sahifa":
     with c3:
         st.markdown(f'<div class="corpus-box"><div class="card-title">Publististik matnlar korpusi</div><div class="card-stat">21 ta matn | {total_gap_pub:,} ta gap</div><div class="card-desc">(Diskursiv tahlil moduli)</div></div>', unsafe_allow_html=True)
 
-# =========================================================
-# 📂 2. UMUMIY KORPUS
-# =========================================================
+    # --- 🛠️ DIAGNOSTIKA PANEL (FAYLLAR ROSTDAN HAM BORLIGINI TEKSHIRISH) ---
+    st.write("---")
+    st.subheader("🛠️ Tizim fayllari diagnostikasi:")
+    
+    # Data papkasini tekshirish
+    if os.path.exists("data"):
+        st.success("✅ 'data' papkasi serverda mavjud.")
+        subfolders = os.listdir("data")
+        st.write(f"📁 Ichidagi papkalar: `{subfolders}`")
+        
+        # Publististika papkasini tekshirish
+        p_folder = None
+        for d in subfolders:
+            if d.lower() == "publististika": p_folder = os.path.join("data", d)
+            
+        if p_folder and os.path.exists(p_folder):
+            st.success(f"✅ Publististika papkasi topildi: `{p_folder}`")
+            subs = os.listdir(p_folder)
+            st.write(f"📂 Publististika ichidagi papkalar: `{subs}`")
+            
+            # Txt files tekshirish
+            t_dir = None
+            for s in subs:
+                if s.lower() == "txt_files": t_dir = os.path.join(p_folder, s)
+            if t_dir and os.path.exists(t_dir):
+                files = os.listdir(t_dir)
+                st.success(f"✅ `txt_files` ichida jami {len(files)} ta fayl bor.")
+                st.write(f"📄 Birinchi 3 ta fayl nomi: `{files[:3]}`")
+            else:
+                st.error("❌ Xato: `txt_files` papkasining nomi to'g'ri yozilmagan yoki yuklanmagan!")
+        else:
+            st.error("❌ Xato: GitHub'da `data/publististika` papkasi topilmadi. Ismini tekshiring!")
+    else:
+        st.error("❌ Mutlaqo xato: Serverda 'data' papkasining o'zi yo'q!")
+
+# --- 📂 2. UMUMIY KORPUS ---
 elif page_selection == "📂 Umumiy korpus":
     df = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt", "docx")
     st.title("📂 Umumiy korpus")
-    
     tab1, tab2 = st.tabs(["🔍 Kontekstli qidiruv (KWIC)", "📊 Chastotali lug'at"])
     with tab1:
         col_inp, col_btn = st.columns([5, 1])
         with col_inp: q = st.text_input("So'z kiriting:", placeholder="Masalan: maktab, til...", label_visibility="collapsed")
         with col_btn: lupa_tugmasi = st.button("🔍 Qidirish", use_container_width=True)
-        
         if q.strip() or lupa_tugmasi:
             word = q.strip()
             if word:
@@ -128,28 +181,21 @@ elif page_selection == "📂 Umumiy korpus":
         xlsx_path = os.path.join(UMUMIY_FOLDER, "chastota.xlsx")
         if os.path.exists(xlsx_path): st.dataframe(pd.read_excel(xlsx_path), use_container_width=True)
 
-# =========================================================
-# 🌐 3. PARALLEL KORPUS
-# =========================================================
+# --- 🌐 3. PARALLEL KORPUS ---
 elif page_selection == "🌐 Parallel korpus":
-    st.markdown('<div class="inner-header"><h2>🌐 O‘zbek-Turk Parallel Korpusi</h2><p>Tillararo qidiruv tizimi</p></div>', unsafe_allow_html=True)
-    st.info("ℹ️ Parallel korpus tizimi quyidagi oynada ochiladi. Bosh sahifaga qaytish uchun chap paneldagi navigatsiyadan foydalaning.")
+    st.markdown('<div class="inner-header"><h2>🌐 O‘zbek-Turk Parallel Korpusi</h2></div>', unsafe_allow_html=True)
     st.components.v1.iframe("https://uzbek-turk-parallel-korpusi-cnzm5cmc3tkccaysyxai5s.streamlit.app/?embed=true", height=800, scrolling=True)
 
-# =========================================================
-# ✍️ 4. PUBLISTISTIK MATNLAR KORPUSI
-# =========================================================
+# --- ✍️ 4. PUBLISTISTIK MATNLAR KORPUSI ---
 elif page_selection == "✍️ Publististik matnlar korpusi":
     df_pub = load_korpus_baza(PUBLISTISTIKA_FOLDER, 21, "pub.", "teg.", "txt", "docx")
-    st.title("✍️ Publististik matnlar korpusi (50 000 ta so'z)")
-    
+    st.title("✍️ Publististik matnlar korpusi")
     tab_p1, tab_p2, tab_p3 = st.tabs(["🔍 Kontekstli qidiruv (KWIC)", "📊 3-bosqich. Diskurs tahlili", "🏛️ 4-bosqich. Ideologik va ijtimoiy ma'nolarni aniqlash"])
     
     with tab_p1:
         col_inp, col_btn = st.columns([5, 1])
         with col_inp: q_pub = st.text_input("Publististik korpusdan so'z kiriting:", placeholder="Masalan: matbuot, xalq...", label_visibility="collapsed")
         with col_btn: lupa_pub = st.button("🔍 Qidirish", key="l_pub", use_container_width=True)
-        
         if q_pub.strip() or lupa_pub:
             word = q_pub.strip()
             if word:
