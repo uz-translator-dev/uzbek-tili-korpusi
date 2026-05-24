@@ -25,7 +25,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# 1. DOCX teglarini xavfsiz o'qish (Error bermaydigan mustahkam versiya)
+# 1. DOCX teglarini xavfsiz o'qish
 def extract_tags_from_docx(docx_path):
     tags = {}
     if os.path.exists(docx_path):
@@ -38,10 +38,10 @@ def extract_tags_from_docx(docx_path):
                         value = row.cells[1].text.strip()
                         if key: tags[key] = value
         except Exception:
-            pass  # Agar docx ochilmasa yoki jadval bo'lmasa, dastur to'xtab qolmaydi
+            pass
     return tags
 
-# 2. Korpus yuklash bazasi (Xatoliklardan himoyalangan)
+# 2. Korpus yuklash bazasi
 @st.cache_data
 def load_korpus_baza(folder, file_count, prefix_txt, prefix_docx, ext_txt, ext_docx):
     data = []
@@ -72,7 +72,6 @@ UMUMIY_FOLDER = "data/umumiy"
 PUBLISTISTIKA_FOLDER = "data/publististika"
 
 # --- 🧭 NAVIGATSIYA PANEL (SIDEBAR) ---
-# Bu tizim sizga har qanday sahifadan darhol bosh interfeysga qaytish imkonini beradi
 st.sidebar.markdown("### 🧭 KORPUS NAVIGATSIYASI")
 page_selection = st.sidebar.radio(
     "Bo'limni tanlang:",
@@ -86,7 +85,6 @@ if page_selection == "🏠 Bosh sahifa":
     st.markdown('<div class="main-header">O\'ZBEK TILI KORPUSI</div>', unsafe_allow_html=True)
     st.markdown('<div class="search-title">KORPUSLAR BO\'YICHA QIDIRUV</div>', unsafe_allow_html=True)
     
-    # Statistika ko'rsatkichlari
     df_um_temp = load_korpus_baza(UMUMIY_FOLDER, 24, "text_", "tag_", "txt", "docx")
     total_gap_um = len(df_um_temp) if not df_um_temp.empty else 0
     
@@ -100,8 +98,6 @@ if page_selection == "🏠 Bosh sahifa":
         st.markdown('<div class="corpus-box"><div class="card-title">Parallel korpus</div><div class="card-stat">O\'zbek-Turk tili</div><div class="card-desc">(Tillararo ulangan tizim)</div></div>', unsafe_allow_html=True)
     with c3:
         st.markdown(f'<div class="corpus-box"><div class="card-title">Publististik matnlar korpusi</div><div class="card-stat">21 ta matn | {total_gap_pub:,} ta gap</div><div class="card-desc">(Diskursiv tahlil moduli)</div></div>', unsafe_allow_html=True)
-    
-    st.sidebar.info("💡 Chap tomondagi panel orqali kerakli korpus bo'limiga to'g'ridan-to'g'ri o'tishingiz va istalgan vaqtda Bosh sahifaga qaytishingiz mumkin.")
 
 # =========================================================
 # 📂 2. UMUMIY KORPUS
@@ -133,25 +129,21 @@ elif page_selection == "📂 Umumiy korpus":
         if os.path.exists(xlsx_path): st.dataframe(pd.read_excel(xlsx_path), use_container_width=True)
 
 # =========================================================
-# 🌐 3. PARALLEL KORPUS (Navigatsiya muammosi hal etildi)
+# 🌐 3. PARALLEL KORPUS
 # =========================================================
 elif page_selection == "🌐 Parallel korpus":
     st.markdown('<div class="inner-header"><h2>🌐 O‘zbek-Turk Parallel Korpusi</h2><p>Tillararo qidiruv tizimi</p></div>', unsafe_allow_html=True)
-    
-    # Asosiy sahifaga osongina qaytish uchun qo'shimcha eslatma tugmasi
     st.info("ℹ️ Parallel korpus tizimi quyidagi oynada ochiladi. Bosh sahifaga qaytish uchun chap paneldagi navigatsiyadan foydalaning.")
-    
-    # Parallel korpus iframe integratsiyasi
     st.components.v1.iframe("https://uzbek-turk-parallel-korpusi-cnzm5cmc3tkccaysyxai5s.streamlit.app/?embed=true", height=800, scrolling=True)
 
 # =========================================================
-# ✍️ 4. PUBLISTISTIK MATNLAR KORPUSI (Xatoliklar bartaraf etildi)
+# ✍️ 4. PUBLISTISTIK MATNLAR KORPUSI
 # =========================================================
 elif page_selection == "✍️ Publististik matnlar korpusi":
     df_pub = load_korpus_baza(PUBLISTISTIKA_FOLDER, 21, "pub.", "teg.", "txt", "docx")
     st.title("✍️ Publististik matnlar korpusi (50 000 ta so'z)")
     
-    tab_p1, tab_p2, tab_p3 = st.tabs(["🔍 Kontekstli qidiruv (KWIC)", "📊 3-bosqich. Diskurs tahlili", "🏛️ 4-bosqich. Ideologik va ijtimoiy ma’nolarni aniqlash"])
+    tab_p1, tab_p2, tab_p3 = st.tabs(["🔍 Kontekstli qidiruv (KWIC)", "📊 3-bosqich. Diskurs tahlili", "🏛️ 4-bosqich. Ideologik va ijtimoiy ma'nolarni aniqlash"])
     
     with tab_p1:
         col_inp, col_btn = st.columns([5, 1])
@@ -181,4 +173,4 @@ elif page_selection == "✍️ Publististik matnlar korpusi":
 
     with tab_p3:
         st.subheader("🏛️ Matnlardagi g'oyaviy va sotsiolingvistik tahlil yo'nalishlari:")
-        st.markdown('<div class="analysis-box" style="border-top: 4px solid #10B981;"><h3 style="color:#047857; margin-top:0;">4-bosqich. Ideologik va ijtimoiy ma’nolarni aniqlash</h3><p><b>Talaba matnlarda quyidagi mezonlarni tadqiq etadi:</b></p><ol style="font-size: 16px; line-height: 2;"><li><b>Muallifning pozitsiyasi:</b> Matndagi sub'ektiv munosabat va voqelikka berilgan yashirin baho.</li><li><b>Ijtimoiy yoki siyosiy qarashlar:</b> Davr, mafkura va ijtimoiy guruhlar manfaatlarining tildagi aksi.</li><li><b>Auditoriyaga ta’sir qilish usullari:</b> Manipulyativ va ritorik vositalar tahlili.</li><li><b>Diskursdagi asosiy g‘oya:</b> Publististik matnning konseptual yadrosini ochib berish.</li></ol></div>', unsafe_allow_html=True)
+        st.markdown('<div class="analysis-box" style="border-top: 4px solid #10B981;"><h3 style="color:#047857; margin-top:0;">4-bosqich. Ideologik va ijtimoiy ma\'nolarni aniqlash</h3><p><b>Talaba matnlarda quyidagi mezonlarni tadqiq etadi:</b></p><ol style="font-size: 16px; line-height: 2;"><li><b>Muallifning pozitsiyasi:</b> Matndagi sub\'ektiv munosabat va voqelikka berilgan yashirin baho.</li><li><b>Ijtimoiy yoki siyosiy qarashlar:</b> Davr, mafkura va ijtimoiy guruhlar manfaatlarining tildagi aksi.</li><li><b>Auditoriyaga ta’sir qilish usullari:</b> Manipulyativ va ritorik vositalar tahlili.</li><li><b>Diskursdagi asosiy g‘oya:</b> Publististik matnning konseptual yadrosini ochib berish.</li></ol></div>', unsafe_allow_html=True)
